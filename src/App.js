@@ -67,7 +67,7 @@ class App extends Component {
     let cards = mapCardState(this.state.cards, [id], cardState.SHOWING);
 
     // cards that are showing
-    const showingCards = cards.filer((c) => c.cardState === cardState.SHOWING)
+    const showingCards = cards.filter((c) => c.cardState === cardState.SHOWING)
 
     const ids = showingCards.map(c => c.id);
 
@@ -75,8 +75,20 @@ class App extends Component {
        showingCards[0].backgroundColor === showingCards[1].backgroundColor) {
         cards = mapCardState(cards, ids, cardState.MATCHING);
     } else if(showingCards.length === 2) {
-        let = 
+        let hidingCards = mapCardState(cards, ids, cardState.HIDING);
+
+        noClick = true;
+
+        this.setState({cards, noClick}, () => {
+          setTimeout(() => {
+            // set card state to hiding after 1.3 seconds
+            this.setState({ cards: hidingCards, noClick: false });
+          }, 1300);
+        });
+        return;
     }
+
+    this.setState({ cards, noClick });
   }
 
   // to handle the case when the 'new game' button is clicked in the navbar
